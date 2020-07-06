@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <form method="get" class="col s12">
+            <div class="row">
+                <div class="input-field col s10">
+                    {{ form.search() }}
+                    {{ form.search.label }}
+                </div>                
+                <div class="input-field in-line col s2">
+                    <button class="btn waves-effect waves-light" type="submit">Search
+                        <i class="material-icons right">send</i>
+                    </button>
+                </div>               
+            </div>
+        </form>        
+    </div>
+    <!-- Search Results -->
+    {% if results %}
+    <div class="row">
+        <div class="col s12">
+            <table>
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                </tr>
+                </thead>        
+                <tbody>
+                    {% for result in results %}
+                    <tr>
+                        <td>{{ result.name }}</td>
+                        <td>{{ result.phone }}</td>
+                        <td>{{ result.email }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>    
+    </div>        
+    {% endif %}
+</div>
+{% endblock %}
