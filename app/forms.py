@@ -5,7 +5,7 @@ from wtforms.validators import DataRequired, ValidationError, optional, Email, E
 class SearchForm(FlaskForm):
     search = StringField('Search', validators=[DataRequired()])
 
-class InputForm(FlaskForm):
+class ContactInfoForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     phone = StringField('Phone')
     email = StringField('Email', validators=[])

@@ -1,24 +1,28 @@
 {% extends 'base.html' %}
+{% block style %}
+<style>
+    a i{
+        color: #444;
+    }
+    
+    .btn-delete:hover {
+        cursor: pointer;
 
+    }
+</style>
+{% endblock %}
 {% block content %}
-<div class="container">
-    <div class="row">
-        <form method="get" class="col s12">
-            <div class="row">
-                <div class="input-field col s10">
-                    {{ form.search() }}
-                    {{ form.search.label }}
-                </div>                
-                <div class="input-field in-line col s2">
-                    <button class="btn waves-effect waves-light" type="submit">Search
-                        <i class="material-icons right">send</i>
-                    </button>
-                </div>               
-            </div>
-        </form>        
+<nav>
+    <div class="nav-wrapper container">
+      <a href="{{ url_for('main.index') }}" class="brand-logo">Contacts</a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="{{ url_for('main.index') }}">Home</a></li>
+        <li><a href="{{ url_for('main.add') }}">Add Contact</a></li>
+      </ul>
     </div>
-    <!-- Search Results -->
-    {% if results %}
+  </nav>
+<div class="container">
+    
     <div class="row">
         <div class="col s12">
             <table>
@@ -27,20 +31,55 @@
                     <th>Name</th>
                     <th>Phone</th>
                     <th>Email</th>
+                    <th>Action</th>
                 </tr>
                 </thead>        
                 <tbody>
+                    {% if results %}
                     {% for result in results %}
                     <tr>
                         <td>{{ result.name }}</td>
                         <td>{{ result.phone }}</td>
                         <td>{{ result.email }}</td>
+                        <td><a href="{{ url_for('main.update', contact_id=result.doc_id) }}"><i class="material-icons btn-create">create</i></a><i class="material-icons btn-delete" id="{{ result.doc_id }}">delete</i></td>
                     </tr>
                     {% endfor %}
+                    {% endif %}
                 </tbody>
             </table>
         </div>    
     </div>        
-    {% endif %}
+   
 </div>
+{% endblock %}
+
+{% block body_scripts %}
+<script>
+    const btnsDelete = document.getElementsByClassName("btn-delete")
+
+    const postDeleteRequest = (contactId) => {
+        return $.ajax({
+          type:'POST',
+          url: '/delete',
+          data: JSON.stringify({contactId: contactId}),          
+          dataType: 'json',
+          contentType: 'application/json;charset=UTF-8'
+        });
+    };
+
+    for (let i=0; i<btnsDelete.length; i++) {
+        btnsDelete[i].addEventListener('click', function(){
+          const contactId = btnsDelete[i].id
+          const contactRow = btnsDelete[i].closest("tr")
+          return postDeleteRequest(contactId).then(resp => {
+              if (resp['status'] == "success") {
+                  contactRow.remove()
+              }
+          }) 
+        }, false);
+    }
+
+
+</script>
+
 {% endblock %}
