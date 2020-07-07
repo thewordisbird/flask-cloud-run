@@ -1,8 +1,18 @@
 from flask import Flask
+from config import DevelopmentConfig, ProductionConfig
 
-def create_app():
+from app.firebase_wrapper import Firebase
+
+#Global Objects
+firebase = Firebase()
+
+def create_app(config=DevelopmentConfig):
     app = Flask(__name__)
     app.config['SECRET_KEY']='my_secret_key'
+    
+    # Initialize Firbase Wrapper
+    firebase.init_app(app)
+    
     # Register Blueprint
     from app.routes import bp
 
