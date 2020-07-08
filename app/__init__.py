@@ -9,7 +9,7 @@ firebase = Firebase()
 def create_app(config=DevelopmentConfig):
     app = Flask(__name__)
     app.config.from_object(config)
-    print(app.config.get('SECRET_KEY'))
+
     # Initialize Firbase Wrapper
     firebase.init_app(app)
     
