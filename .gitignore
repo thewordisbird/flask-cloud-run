@@ -133,3 +133,6 @@ dmypy.json
 
 # keys
 /.keys
+
+# macos
+.DS_Store
